@@ -32,14 +32,14 @@ public class MainApp {
             System.out.println("Opción? ");
             opcion = leerOpcion(7); // hay 6 acciones principales sobre el inventario + terminar la aplicación
             switch(opcion) {
-                case 1:    //añadir un nuevoa artista
+                case 1:    //añadir un nuevo artista
                     while (opcion!=0) {
                         mostrarMenuAddNuevoArtista();
                         System.out.println("Opción? ");
                         opcion = leerOpcion(6); // 5 clases de productos y salida del menú
                         if (opcion!=0) {
                             Artista A = nuevoArtista(opcion);
-                            Artista.addNuevoProducto(A, opcion);
+                            ControladorMusica.addNuevoArtista(A, opcion);
                             System.out.println("Artista añadido, número "+Artista.tamano()+"\n");
                             Artista.getArtista(Artista.tamano()).imprimir(); //imprime el último producto incluido
                             System.out.println();

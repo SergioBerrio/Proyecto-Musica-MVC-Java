@@ -1,5 +1,8 @@
 package Controlador;
 
+import Modelo.Artista;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -95,6 +98,25 @@ public class ControladorMusica {
 
             pstmt.executeUpdate();
             pstmt2.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+    public static void addNuevoArtista(Artista artista, int opcion) throws IOException {
+
+        String sql = "INSERT INTO Artista(id, nombre, apellido, localidad) VALUES(?,?,?,?)";
+
+        try {
+            Connection conn = conectar();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, Integer.parseInt(restos[0]));
+            pstmt.setString(2, restos[1]);
+            pstmt.setDouble(3, restos[2]);
+            pstmt.setInt(4, restos[3]);
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
