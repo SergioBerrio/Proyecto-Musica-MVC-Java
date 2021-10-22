@@ -1,125 +1,74 @@
 package Controlador;
 
 import Modelo.Artista;
+import Modelo.Disco;
+import Modelo.ModeloOperaciones;
+import Vista.MainApp;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class ControladorMusica {
 
     /** CREACIÓN DE LA DB **/
     public static void crearDatabase(){
 
-        String sqlCrearDatabase = "CREATE DATABASE IF NOT EXISTS dbMusica";
-
-        String url = "jdbc:sqlite:C:\\Users\\2DAM3\\IdeaProjects\\ProyectoMúsicaMVC\\dbMusica.sqlite";
-        Connection con = null;
-
-        try{
-            try {
-                con = DriverManager.getConnection(url);
-
-                //System.out.println("La DB dbSuperOnline ha sido creada.");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-            PreparedStatement pstmt = con.prepareStatement(sqlCrearDatabase);
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        ModeloOperaciones.crearDatabase();
     }
 
     /**  CONEXIÓN A LA DB **/
-    public static Connection conectar(){
+    public static void conectar(){
 
-        // SQLite connection string
-        String url = "jdbc:sqlite:C:\\Users\\2DAM3\\IdeaProjects\\ProyectoMúsicaMVC\\dbMusica.sqlite";
-        Connection conexion = null;
-
-        try {
-            conexion = DriverManager.getConnection(url);
-
-            System.out.println("La conexión con la BD SQLite ha sido establecida.");
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return conexion;
+        ModeloOperaciones.conectar();
     }
 
     /** ELIMINACIÓN DE LAS TABLAS **/
     public static void eliminarTablas(){
 
-        String sqlEliminarArtista = "DROP TABLE IF EXISTS Artista";
-        String sqlEliminarDisco = "DROP TABLE IF EXISTS Disco";
-
-        try{
-            Connection conn = conectar();
-
-            PreparedStatement pstmt = conn.prepareStatement(sqlEliminarArtista);
-            PreparedStatement pstmt2 = conn.prepareStatement(sqlEliminarDisco);
-
-            pstmt.executeUpdate();
-            pstmt2.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        ModeloOperaciones.eliminarTablas();
     }
 
     /** CREACIÓN DE LAS TABLAS **/
     public static void crearTablas(){
 
-        String sqlCrearArtista = "CREATE TABLE Artista (" +
-                "id integer PRIMARY KEY," +
-                "nombre text NOT NULL," +
-                "apellido text NOT NULL," +
-                "localidad text NOT NULL)";
+        ModeloOperaciones.crearTablas();
+    }
 
-        String sqlCrearDisco = "CREATE TABLE Disco (" +
-                "id integer PRIMARY KEY," +
-                "nombre text NOT NULL," +
-                "fecha_publi text NOT NULL," +
-                "id_artista integer NOT NULL)";
+    /** AÑADIR UN NUEVO ARTISTA **/
+    public static void addNuevoArtista() {
+        String nombre = MainApp.pedirNombreArtista();
+        String apellido = MainApp.pedirApellido();
+        String localidad = MainApp.pedirLocalidad();
+        Artista.addNuevoArtista(nombre, apellido, localidad);
+    }
 
-        try{
-            Connection conn = conectar();
+    /** MOSTRAR TODOS LOS ARTISTAS REGISTRADOS **/
+    public static void mostrarArtistas(){
+        Artista.mostrarArtistas();
+    }
 
-            PreparedStatement pstmt = conn.prepareStatement(sqlCrearArtista);
-            PreparedStatement pstmt2 = conn.prepareStatement(sqlCrearDisco);
+    /** OBTENER EL ARTISTA EN BASE A SU ID **/
+    public static Artista getArtista(int opcion){
+        Artista.getArtista(opcion);
 
-            pstmt.executeUpdate();
-            pstmt2.executeUpdate();
+        return null;
+    }
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    /** ACTUALIZAR EL ARTISTA EN BASE A SU ID **/
+    public static void actualizarArtista(int id, String nombre, String apellido, String localidad){
+        Artista.actualizarArtista(id, nombre, apellido, localidad);
+    }
+
+    /** ELIMINAR EL ARTISTA EN BASE A SU ID **/
+    public static void eliminarArtista(int id){
+        Artista.eliminarArtista(id);
     }
 
 
-    public static void addNuevoArtista(Artista artista, int opcion) throws IOException {
-
-        String sql = "INSERT INTO Artista(id, nombre, apellido, localidad) VALUES(?,?,?,?)";
-
-        try {
-            Connection conn = conectar();
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, Integer.parseInt(restos[0]));
-            pstmt.setString(2, restos[1]);
-            pstmt.setDouble(3, restos[2]);
-            pstmt.setInt(4, restos[3]);
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+    /** AÑADIR UN NUEVO DISCO **/
+    public static void addNuevoDisco() throws IOException {
+        String nombre = MainApp.pedirNombreDisco();
+        String fecha_publi = MainApp.pedirApellido();
+        int id_artista = MainApp.pedirIdArtista();
+        Disco.addNuevoDisco(nombre, fecha_publi, id_artista);
     }
 }

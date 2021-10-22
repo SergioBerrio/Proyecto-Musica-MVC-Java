@@ -35,83 +35,83 @@ public class MainApp {
                 case 1:    //añadir un nuevo artista
                     while (opcion!=0) {
                         mostrarMenuAddNuevoArtista();
-                        System.out.println("Opción? ");
+
+                        /*System.out.println("Opción? ");
                         opcion = leerOpcion(6); // 5 clases de productos y salida del menú
                         if (opcion!=0) {
                             Artista A = nuevoArtista(opcion);
                             ControladorMusica.addNuevoArtista(A, opcion);
                             System.out.println("Artista añadido, número "+Artista.tamano()+"\n");
-                            Artista.getArtista(Artista.tamano()).imprimir(); //imprime el último producto incluido
+                            //Artista.getArtista(Artista.tamano()).imprimir(); //imprime el último producto incluido
                             System.out.println();
                             System.out.println();
                             pause();
-                        }
+                        }*/
+
+                        pedirNombreArtista();
+                        pedirApellido();
+                        pedirLocalidad();
+
+
                     } opcion=1; break;
                 case 2:    //añadir nuevo disco
                     while (opcion!=0) {
                         mostrarMenuAddNuevoArtista();
-                        System.out.println("Opción? ");
+
+                        /*System.out.println("Opción? ");
                         opcion = leerOpcion(6); // 5 clases de productos y salida del menú
                         if (opcion!=0) {
                             Disco D = nuevoDisco(opcion);
-                            Disco.addNuevoProducto(D, opcion);
-                            System.out.println("Modelo.Artista añadido, número "+ Disco.tamano()+"\n");
-                            Disco.getArtista(Disco.tamano()).imprimir(); //imprime el último producto incluido
+                            ControladorMusica.addNuevoDisco(D, opcion);
+                            System.out.println("Artista añadido, número "+ Disco.tamano()+"\n");
+                            //Disco.getDisco(Disco.tamano()).imprimir(); //imprime el último producto incluido
                             System.out.println();
                             System.out.println();
                             pause();
-                        }
+                        }*/
+
+                        pedirNombreDisco();
+                        pedirFechaPubli();
+                        pedirIdArtista();
+
                     } opcion=1; break;
                 case 3:     //mostrar los aristas registrados
-                    Artista.mostrarArtistas();
+                    ControladorMusica.mostrarArtistas();
                     pause();
                     break;
-                case 4:
-                    while (opcion!=0) {
-                        ControladorMusica.mostrarProductos();
-                        System.out.println("0 - Finalizar eliminación del producto");
-                        System.out.println("Elige el número del producto a eliminar, tecla:x (/= 0):");
-                        System.out.println("Opción? ");
-                        opcion = leerOpcion(ControladorMusica.tamano()+1);
-                        if (opcion!=0) {
-                            a = ControladorMusica.getArtista(opcion);
-                            System.out.println("Producto elegido: "+a.getNombre());
-                            ControladorMusica.eliminarArtista(a.getID());
-                            System.out.println("Producto eliminado: "+a.getNombre());
-                            System.out.println();
-                            pause();
-                        }
-                    } opcion=1;
+                case 4:    //consultar los datos X artista, X será el nombre
+                    //ControladorMusica.getArtista(Artista.getArtista(opcion));
+                    pause();
                     break;
                 case 5: 	//modificar un artista
                     while (opcion!=0) {
-                        Artista.mostrarArtistas();
+                        ControladorMusica.mostrarArtistas();
                         System.out.println("0 - Finalizar modificación del artista");
                         System.out.println("Elige el id del artista a modificar, tecla:x (/= 0):");
                         System.out.println("Opción? ");
-                        opcion = leerOpcion(Artista.tamano()+1);
+                        //opcion = leerOpcion(Artista.tamano()+1);
                         if (opcion!=0) {
-                            a = ControladorMusica.getArtista(opcion);
-                            System.out.println("Artista elegido: "+a.getNombre());
-                            ControladorMusica.eliminarProducto(a.getCodigo());
-                            System.out.println("Artista modificado: "+a.getNombre());
+                            Artista A = ControladorMusica.getArtista(opcion);
+                            System.out.println("Artista elegido: "+A.getNombre());
+                            ControladorMusica.actualizarArtista(A.getId(), A.getNombre(), A.getApellido(), A.getLocalidad());
+                            System.out.println("Artista modificado: "+A.getNombre());
                             System.out.println();
                             pause();
                         }
                     } opcion=1;
                     break;
-                case 6:
+                case 6:    //eliminar el artista junto a todos sus discos
                     while (opcion!=0) {
-                        Artista.mostrarArtistas();
+                        ControladorMusica.mostrarArtistas();
                         System.out.println("0 - Finalizar eliminación del artista");
                         System.out.println("Elige el id del artista a eliminar, tecla:x (/= 0):");
                         System.out.println("Opción? ");
-                        opcion = leerOpcion(Artista.tamano()+1);
+                        //opcion = leerOpcion(Artista.tamano()+1);
                         if (opcion!=0) {
-                            a = ControladorMusica.getArtista(opcion);
-                            System.out.println("Artista elegido: "+a.getNombre());
-                            ControladorMusica.eliminarProducto(a.getCodigo());
-                            System.out.println("Artista modificado: "+a.getNombre());
+                            Artista A = ControladorMusica.getArtista(opcion);
+                            System.out.println("Artista elegido: "+A.getNombre());
+                            ControladorMusica.eliminarArtista(A.getId());
+                            System.out.println("Artista modificado: "+A.getNombre());
                             System.out.println();
                             pause();
                         }
@@ -140,14 +140,14 @@ public class MainApp {
 
     public static void mostrarMenuAddNuevoArtista() {// ver productos y escoger uno
         System.out.println("====================================================");
-        System.out.println("=   Elige el tipo de producto que quieres añadir:  =");
+        System.out.println("=   Elige el tipo de artista que quieres añadir:  =");
         System.out.println("====================================================");
-        System.out.println("         Tecla:1 - Lácteo");
-        System.out.println("         Tecla:2 - Frutas u hortalizas");
-        System.out.println("         Tecla:3 - Bebidas");
-        System.out.println("         Tecla:4 - Herramientas");
-        System.out.println("         Tecla:5 - Otros");
-        System.out.println("         Tecla:0 - Cancelar");
+        System.out.println("         1. - Lácteo");
+        System.out.println("         2. - Frutas u hortalizas");
+        System.out.println("         3. - Bebidas");
+        System.out.println("         4. - Herramientas");
+        System.out.println("         5. - Otros");
+        System.out.println("         0. - Cancelar");
         System.out.println("====================================================");
     }
 
@@ -197,5 +197,36 @@ public class MainApp {
             }
         }
         return n;
+    }
+
+    public static String pedirNombreArtista(){
+        System.out.println("Introduce el nombre del artista (string)");
+        return in.nextLine();
+    }
+
+    public static String pedirApellido() {
+        System.out.println("Introduce el apellido del artista (string)");
+        return in.nextLine();
+    }
+
+    public static String pedirLocalidad() {
+        System.out.println("Introduce la localidad del artista (string)");
+        return in.nextLine();
+    }
+
+
+    public static String pedirNombreDisco(){
+        System.out.println("Introduce el nombre del disco (string)");
+        return in.nextLine();
+    }
+
+    public static String pedirFechaPubli() {
+        System.out.println("Introduce la fecha de publicación del disco (string)");
+        return in.nextLine();
+    }
+
+    public static int pedirIdArtista() {
+        System.out.println("Introduce la el ID del artista al que pertenece (integer)");
+        return in.nextInt();
     }
 }
