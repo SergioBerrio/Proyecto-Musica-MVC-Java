@@ -1,6 +1,5 @@
 package Modelo;
 
-import java.io.IOException;
 import java.sql.*;
 
 public class Disco {
@@ -44,13 +43,13 @@ public class Disco {
 
 
     /** OPERACIONES CON EL DISCO **/
-    public static void addNuevoDisco(String nombre, String fecha_publi, int id_artista) throws IOException {
+    public static void addNuevoDisco(String nombre, String fecha_publi, int id_artista) {
 
-        String sql = "INSERT INTO Artista(nombre, fecha_publi, id_artista) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Disco(nombre, fecha_publi, id_artista) VALUES(?,?,?)";
 
         try {
-            Connection conn = ModeloOperaciones.conectar();
-            PreparedStatement ps = conn.prepareStatement(sql);
+            Connection con = ModeloOperaciones.conectar();
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, nombre);
             ps.setString(2, fecha_publi);
             ps.setInt(3, id_artista);
@@ -58,6 +57,7 @@ public class Disco {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            System.out.println("es el error de aqui");
         }
     }
 

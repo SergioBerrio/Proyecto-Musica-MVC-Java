@@ -1,8 +1,5 @@
 package Modelo;
 
-import Controlador.ControladorMusica;
-
-import java.io.IOException;
 import java.sql.*;
 
 public class Artista {
@@ -47,10 +44,10 @@ public class Artista {
 
     /** OPERACIONES CON EL ARTISTA **/
 
-
+    /** CREAR UN NUEVO ARTISTA **/
     public static void addNuevoArtista(String nombre, String apellido, String localidad) {
 
-        String sql = "INSERT INTO Artista(nombre, apellido, localidad) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO Artista(nombre, apellido, localidad) VALUES(?,?,?)";
 
         try {
             Connection conn = ModeloOperaciones.conectar();
@@ -68,12 +65,6 @@ public class Artista {
     /** MOSTRAR LOS ARTISTAS REGISTRADOS **/
     public static void mostrarArtistas(){
         System.out.println("**** Lista completa de artistas registrados ****");
-        //System.out.println("");
-
-        /*for (int i = 0; i < listaProductos.size(); i++) {
-
-            listaProductos.get(i).imprimir();
-        }*/
 
         String sqlSelectArtista ="SELECT * FROM Artista";
 
@@ -81,8 +72,6 @@ public class Artista {
             Connection conn = ModeloOperaciones.conectar();
             Statement st = conn.createStatement();
 
-            System.out.println("");
-            System.out.println("**** Tabla de artistas ****");
             ResultSet rs = st.executeQuery(sqlSelectArtista);
 
             while (rs.next()) {
@@ -92,11 +81,10 @@ public class Artista {
                 String localidad = rs.getString("localidad");
 
                 // print the results
-                System.out.printf("ID:%d, Nombre:%s, Apellido:%s, Localidad:%s\n", id, nombre, apellido, localidad);
+                System.out.printf("ID:%d\n Nombre:%s\n Apellido:%s\n Localidad:%s\n", id, nombre, apellido, localidad);
+                System.out.println("");
 
             }
-
-            System.out.println("");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -104,13 +92,13 @@ public class Artista {
     }
 
     /** MOSTRAR UN ARTISTA SELECCIONADO **/
-    public static void getArtista(int id){
-
-        String sqlSelectArtista ="SELECT * FROM Artista";
+    public static void getDatosArtista(String nombre){
+        String sqlSelectArtista ="SELECT * FROM Artista WHERE nombre = '" + nombre + "'";
+        int id = 0;
 
         try{
-            Connection conn = ModeloOperaciones.conectar();
-            Statement st = conn.createStatement();
+            Connection con = ModeloOperaciones.conectar();
+            Statement st = con.createStatement();
 
             System.out.println("");
             System.out.println("**** Tabla de artistas ****");
@@ -118,12 +106,36 @@ public class Artista {
 
             while (rs.next()) {
                 id = rs.getInt("id");
-                String nombre = rs.getString("nombre");
+                String nombreArtista = rs.getString("nombre");
                 String apellido = rs.getString("apellido");
                 String localidad = rs.getString("localidad");
 
                 // print the results
-                System.out.printf("ID:%d, Nombre:%s, Apellido:%s, Localidad:%s\n", id, nombre, apellido, localidad);
+                System.out.printf("ID:%d\n Nombre:%s\n Apellido:%s\n Localidad:%s\n", id, nombreArtista, apellido, localidad);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        String sqlSelectDiscosArtista ="SELECT * FROM Disco WHERE id_artista = " + id;
+
+        try{
+            Connection conn = ModeloOperaciones.conectar();
+            Statement st = conn.createStatement();
+
+            System.out.println("");
+            System.out.println("**** Discos pertenecientes al artista " + nombre + " ****");
+            ResultSet rs = st.executeQuery(sqlSelectDiscosArtista);
+
+            while (rs.next()) {
+                id = rs.getInt("id");
+                String nombreDisco = rs.getString("nombre");
+                String fecha_publi = rs.getString("fecha_publi");
+                int id_artista = rs.getInt("id_artista");
+
+                // print the results
+                System.out.printf("ID:%d\n Nombre:%s\n Fecha de publicación:%s\n ID del artista:%s\n", id, nombreDisco, fecha_publi, id_artista);
 
             }
 
@@ -136,7 +148,7 @@ public class Artista {
 
     /** ACTUALIZAR UN ARTISTA SELECCIONADO **/
     public static void actualizarArtista(int id, String nombre, String apellido, String localidad){
-        String sqlActualizarDatosArtista ="UPDATE FrutaHortaliza SET nombre = '" + nombre + "', apellido = '" + apellido + "', localidad = '" + localidad +"' WHERE id = " + id;
+        String sqlActualizarDatosArtista ="UPDATE Artista SET nombre = '" + nombre + "', apellido = '" + apellido + "', localidad = '" + localidad +"' WHERE id = " + id;
 
         try{
             Connection conn = ModeloOperaciones.conectar();
@@ -146,6 +158,33 @@ public class Artista {
             ps.executeUpdate();
 
             conn.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /** MOSTRAR UN ARTISTA SELECCIONADO **/
+    public static void getArtistaID(int id) {
+        String sqlSelectArtista = "SELECT * FROM Artista WHERE id = " + id;
+
+        try {
+            Connection con = ModeloOperaciones.conectar();
+            Statement st = con.createStatement();
+
+            System.out.println("");
+            System.out.println("**** Tabla del artista con ID:" + id + " ****");
+            ResultSet rs = st.executeQuery(sqlSelectArtista);
+
+            while (rs.next()) {
+                id = rs.getInt("id");
+                String nombreArtista = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                String localidad = rs.getString("localidad");
+
+                // print the results
+                System.out.printf("ID:%d\n Nombre:%s\n Apellido:%s\n Localidad:%s\n", id, nombreArtista, apellido, localidad);
+            }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

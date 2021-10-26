@@ -5,10 +5,9 @@ import Modelo.Disco;
 import Modelo.ModeloOperaciones;
 import Vista.MainApp;
 
-import java.io.IOException;
-
 public class ControladorMusica {
 
+    /** OPERACIONES CON LA BASE DE DATOS **/
     /** CREACIÓN DE LA DB **/
     public static void crearDatabase(){
 
@@ -33,11 +32,13 @@ public class ControladorMusica {
         ModeloOperaciones.crearTablas();
     }
 
+    /** OPERACIONES CON ARTISTAS **/
     /** AÑADIR UN NUEVO ARTISTA **/
     public static void addNuevoArtista() {
         String nombre = MainApp.pedirNombreArtista();
         String apellido = MainApp.pedirApellido();
         String localidad = MainApp.pedirLocalidad();
+
         Artista.addNuevoArtista(nombre, apellido, localidad);
     }
 
@@ -46,29 +47,29 @@ public class ControladorMusica {
         Artista.mostrarArtistas();
     }
 
-    /** OBTENER EL ARTISTA EN BASE A SU ID **/
-    public static Artista getArtista(int opcion){
-        Artista.getArtista(opcion);
-
-        return null;
+    /** OBTENER EL ARTISTA EN BASE A SU NOMBRE **/
+    public static void getDatosArtista(String nombre){
+        Artista.getDatosArtista(nombre);
     }
 
-    /** ACTUALIZAR EL ARTISTA EN BASE A SU ID **/
+    /** ACTUALIZAR LOS DATOS DEL ARTISTA **/
     public static void actualizarArtista(int id, String nombre, String apellido, String localidad){
         Artista.actualizarArtista(id, nombre, apellido, localidad);
     }
 
-    /** ELIMINAR EL ARTISTA EN BASE A SU ID **/
+    /** ELIMINAR EL ARTISTA Y SUS DISCOS EN BASE A SU ID **/
     public static void eliminarArtista(int id){
         Artista.eliminarArtista(id);
     }
 
 
+    /** OPERACIONES CON DISCOS **/
     /** AÑADIR UN NUEVO DISCO **/
-    public static void addNuevoDisco() throws IOException {
+    public static void addNuevoDisco(int idArtista) {
         String nombre = MainApp.pedirNombreDisco();
-        String fecha_publi = MainApp.pedirApellido();
-        int id_artista = MainApp.pedirIdArtista();
+        String fecha_publi = MainApp.pedirFechaPubli();
+        int id_artista = idArtista;
+
         Disco.addNuevoDisco(nombre, fecha_publi, id_artista);
     }
 }
